@@ -1,0 +1,50 @@
+<header xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        th:fragment="header">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="/" style="color: white">Test-online</a>
+            <form class="d-flex" sec:authorize="!isAuthenticated()">
+                <a href="/login" class="btn btn-primary" role="button" aria-disabled="true">Войти</a>
+            </form>
+            <form class="d-flex" sec:authorize="isAuthenticated()">
+                <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Выйти</a>
+            </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/users" style="color: white">Пользователи платформы</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/groups" style="color: white">Группы</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/subjects" style="color: white">Преподаваемые дисциплины</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated() && (hasRole('TEACHER'))" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Тесты
+                        </a>
+                        <ul class="dropdown-menu" style="color: white">
+                            <li><a class="dropdown-item" th:href="'/tests/history/' + ${#authentication.getPrincipal().getUserId()}">Созданные тесты</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="'/test-students/active/' + ${#authentication.getPrincipal().getUserId()}">Активные тесты (студенты)</a></li>
+                            <li><a class="dropdown-item" href="#">Активные тесты (группы)</a></li>
+                            <li><a class="dropdown-item" th:href="'/test-students/archive/' + ${#authentication.getPrincipal().getUserId()}">Архив (назначение)</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('TEACHER'))" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/users/students" style="color: white">Список студентов</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('TEACHER'))" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/groups" style="color: white">Список групп</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    password: g12nokona
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/education-tests
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    open-in-view: true
+    defer-datasource-initialization: true
+  security:
+    user:
+      name: admin
+      password: $2y$10$o5ZsR1kGg3WggMESx8YwV.O9Da9pg9Yw3R1yoav2EctmnsJX3pGQq
+      roles: ADMIN
+  sql:
+    init:
+      mode: always
+server:
+  port: 8090

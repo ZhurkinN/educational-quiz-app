@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Тесты</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <hr class="hr"/>
+    <h3>Поиск теста</h3>
+    <form method="POST" th:action="@{/tests/search}" th:object="${testSearchForm}">
+        <div class="mt-0 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="title" type="text" class="form-control" id="title" placeholder="Тема">
+                    <label for="title">Тема</label>
+                </div>
+            </div>
+            <div class="row g-2">
+                <button type="submit" class="btn btn-secondary">Найти тест</button>
+            </div>
+        </div>
+    </form>
+    <hr class="mt-3 hr"/>
+    <div class="mt-5">
+        <div class="row">
+            <div class="col">
+                <h2>Созданные тесты</h2>
+            </div>
+            <div class="col">
+                <a
+                        sec:authorize="isAuthenticated() && hasRole('TEACHER')"
+                        href="/tests/add"
+                        class="btn btn-success"
+                        role="button"
+                        style="float: right"
+                        aria-disabled="true">Создать новый тест</a>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Тема теста</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Дедлайн</th>
+                    <th scope="col">Длительность</th>
+                    <th scope="col">Предмет</th>
+                    <th scope="col">Кол-во вопросов</th>
+                    <th scope="col">Преподаватель</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="test : ${tests}">
+                    <td>
+                        <a class="text-link text-blue" th:href="'/tests/' + ${test.getId()}"
+                           th:text="${test.getTitle()}"></a>
+                    </td>
+                    <td th:text="${test.getDescription()}"></td>
+                    <td th:text="${test.getDeadline()}"></td>
+                    <td th:text="${test.getDuration()}"></td>
+                    <td th:text="${test.getSubject().getTitle()}"></td>
+                    <td th:text="${test.getQuestionQuantity()}"></td>
+                    <td th:text="${test.getTeacher().getLogin()}"></td>
+                    <td>
+                        <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
+                            <a class="btn btn-sm btn-outline-success"
+                               th:href="'/questions/' + ${test.getId()}">Список вопросов</a>
+                            <a class="btn btn-sm btn-outline-success"
+                               th:href="'/tests/update/' + ${test.getId()}">Редактировать</a>
+                            <a class="btn btn-sm btn-outline-danger"
+                               th:href="'/tests/delete/' + ${test.getId()}"
+                               onclick="return confirm('Вы действительно хотите удалить тест?');">Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <nav aria-label="Pagination" th:if="${tests.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${tests.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/tests?page={id}(id=${tests.number lt 2 ? 1 : tests.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq tests.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence(1, tests.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/tests?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${tests.number eq tests.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/tests?page={id}(id=${tests.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
