@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты группы</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="mt-5">
+        <div class="row">
+            <div class="col">
+                <h2>Результаты теста в группе</h2>
+            </div>
+            <div class="col">
+                <a
+                        onclick="window.history.back()"
+                        class="btn btn-warning"
+                        role="button"
+                        style="float: right"
+                        aria-disabled="true">Вернуться</a>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Тема теста</th>
+                    <th scope="col">ФИО студента</th>
+                    <th scope="col">Группа</th>
+                    <th scope="col">Кол-во баллов</th>
+                    <th scope="col">Дата прохождения</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="record : ${records}">
+                    <td th:text="${record.getTest().getTitle()}"></td>
+                    <td th:text="${record.getStudent().getFirstName()} + ' ' + ${record.getStudent().getMiddleName()} + ' ' + ${record.getStudent().getLastName()}"></td>
+                    <td th:text="${record.getStudent().getGroup().getGroupNumber()}"></td>
+                    <td th:if="${record.getIsDone()}">
+                        <a th:text="${record.getScore().toString()} + '/' + ${record.getTest().getQuestionQuantity().toString()}"></a>
+                    </td>
+                    <td th:unless="${record.getIsDone()}">
+                        <a>---------</a>
+                    </td>
+                    <td th:if="${record.getIsDone()}">
+                        <a th:text="${record.getTestDate()}"></a>
+                    </td>
+                    <td th:unless="${record.getIsDone()}">
+                        <a>---------</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <nav aria-label="Pagination" th:if="${records.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${records.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/records?page={id}(id=${records.number lt 2 ? 1 : records.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq records.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence(1, records.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/records?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${records.number eq records.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/records?page={id}(id=${records.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

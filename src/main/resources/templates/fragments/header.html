@@ -33,7 +33,7 @@
                             <li><a class="dropdown-item" th:href="'/tests/history/' + ${#authentication.getPrincipal().getUserId()}">Созданные тесты</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="'/test-students/active/' + ${#authentication.getPrincipal().getUserId()}">Активные тесты (студенты)</a></li>
-                            <li><a class="dropdown-item" href="#">Активные тесты (группы)</a></li>
+                            <li><a class="dropdown-item" th:href="'/test-groups/' + ${#authentication.getPrincipal().getUserId()}">Тесты (группы)</a></li>
                             <li><a class="dropdown-item" th:href="'/test-students/archive/' + ${#authentication.getPrincipal().getUserId()}">Архив (назначение)</a></li>
                         </ul>
                     </li>

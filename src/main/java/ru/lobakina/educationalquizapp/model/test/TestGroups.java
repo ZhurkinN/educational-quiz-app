@@ -4,13 +4,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.model.user.Group;
 import ru.lobakina.educationalquizapp.model.user.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Accessors(chain = true)
 public class TestGroups {
 
     @Id
@@ -35,4 +40,8 @@ public class TestGroups {
 
     @Column(columnDefinition = "int default 0")
     private Integer studentsCompleted;
+
+    @OneToMany(mappedBy = "testGroups",
+            cascade = CascadeType.ALL)
+    private Set<TestStudents> testStudents = new HashSet<>();
 }

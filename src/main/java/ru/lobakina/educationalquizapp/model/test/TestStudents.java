@@ -37,4 +37,9 @@ public class TestStudents {
 
     @Column(columnDefinition = "boolean default FALSE")
     private Boolean isDone;
+
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "test_group_id")
+    private TestGroups testGroups;
 }

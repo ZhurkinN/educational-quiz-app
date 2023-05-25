@@ -10,6 +10,7 @@ import ru.lobakina.educationalquizapp.repository.user.UserRepository;
 import ru.lobakina.educationalquizapp.service.generic.GenericService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TestService extends GenericService<Test> {
@@ -36,5 +37,10 @@ public class TestService extends GenericService<Test> {
         User teacher = userRepository.findById(id)
                 .orElseThrow();
         return testRepository.findByTeacher(teacher, pageable);
+    }
+
+    public List<Test> getTeachersTests(Long id) {
+        User teacher = userRepository.findById(id).orElseThrow();
+        return testRepository.findByTeacher(teacher);
     }
 }

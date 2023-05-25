@@ -94,6 +94,4 @@ public class TestController extends GenericController<Test> {
         return "redirect:/tests/history/" + testDTO.getTeacher();
     }
 
-
 }
-

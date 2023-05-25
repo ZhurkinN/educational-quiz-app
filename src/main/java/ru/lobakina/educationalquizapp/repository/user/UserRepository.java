@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import ru.lobakina.educationalquizapp.model.user.User;
 import ru.lobakina.educationalquizapp.repository.generic.GenericRepository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends GenericRepository<User> {
     User findUserByLogin(String username);
@@ -37,4 +39,8 @@ public interface UserRepository extends GenericRepository<User> {
     @Query(nativeQuery = true,
             value = "select users.* from users where users.role_id = 2")
     Page<User> findStudents(Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = "select users.* from users where users.role_id = 2")
+    List<User> findStudents();
 }

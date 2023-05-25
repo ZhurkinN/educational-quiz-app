@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Тесты на группу</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="mt-5">
+        <div class="row">
+            <div class="col">
+                <h2>Список тестов, назначенных на группы</h2>
+            </div>
+            <div class="col">
+                <a
+                        sec:authorize="isAuthenticated() && hasRole('TEACHER')"
+                        th:href="'/test-groups/start/' + ${#authentication.getPrincipal().getUserId()}"
+                        class="btn btn-success"
+                        role="button"
+                        style="float: right"
+                        aria-disabled="true">Назначить тест</a>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Тема теста</th>
+                    <th scope="col">Номер группы</th>
+                    <th scope="col">Готовность</th>
+                    <th scope="col">Кол-во выполнивших студентов</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="record : ${records}">
+                    <td th:text="${record.getTest().getTitle()}"></td>
+                    <td th:text="${record.getGroup().getGroupNumber()}"></td>
+                    <td th:text="${record.getIsDone()}"></td>
+                    <td th:text="${record.getStudentsCompleted() + '/' + record.getTestStudents().size()}"></td>
+                    <td>
+                        <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
+                            <a class="btn btn-sm btn-outline-success"
+                               th:href="'/test-groups/results/' + ${record.getId()}">Посмотреть прогресс студентов</a>
+                            <a class="btn btn-sm btn-outline-danger"
+                               th:href="'/test-groups/delete/' + ${record.getId()}"
+                               onclick="return confirm('Вы действительно хотите удалить тест?');">Удалить все назначенные тесты</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <nav aria-label="Pagination" th:if="${records.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${records.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/records?page={id}(id=${records.number lt 2 ? 1 : records.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq records.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence(1, records.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/records?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${records.number eq records.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/records?page={id}(id=${records.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

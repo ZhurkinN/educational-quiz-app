@@ -1,13 +1,23 @@
 package ru.lobakina.educationalquizapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.lobakina.educationalquizapp.model.test.Test;
+import ru.lobakina.educationalquizapp.model.test.TestGroups;
+import ru.lobakina.educationalquizapp.model.test.TestStudents;
+import ru.lobakina.educationalquizapp.model.user.User;
+import ru.lobakina.educationalquizapp.service.TestService;
 import ru.lobakina.educationalquizapp.service.TestStudentsService;
+import ru.lobakina.educationalquizapp.service.UserService;
+import ru.lobakina.educationalquizapp.support.dto.TestStudentsDTO;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/test-students")
@@ -15,12 +25,53 @@ import ru.lobakina.educationalquizapp.service.TestStudentsService;
 public class TestStudentsController {
 
     private final TestStudentsService testStudentsService;
+    private final TestService testService;
+    private final UserService userService;
 
     @GetMapping("/active/{id}")
-    public String getTeachersTests(@RequestParam(value = "page", defaultValue = "1") int page,
-                                   @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                                   Model model,
-                                   @PathVariable Long id) {
-        return "/test-students/startTest";
+    public String getTeachersActiveTests(@RequestParam(value = "page", defaultValue = "1") int page,
+                                         @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                         Model model,
+                                         @PathVariable Long id) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<TestStudents> testPage = testStudentsService.findActiveTestsByTeacher(id, pageRequest);
+        Page<TestStudents> finalTestPage = new PageImpl<>(testPage.getContent(), pageRequest, testPage.getTotalElements());
+        model.addAttribute("records", finalTestPage);
+        return "/test-students/viewActive";
+    }
+
+    @GetMapping("/archive/{id}")
+    public String getTeachersArchiveTests(@RequestParam(value = "page", defaultValue = "1") int page,
+                                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                          Model model,
+                                          @PathVariable Long id) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<TestStudents> testPage = testStudentsService.findArchiveTestsByTeacher(id, pageRequest);
+        Page<TestStudents> finalTestPage = new PageImpl<>(testPage.getContent(), pageRequest, testPage.getTotalElements());
+        model.addAttribute("records", finalTestPage);
+        return "/test-students/viewArchive";
+    }
+
+    @GetMapping("/start/{id}")
+    public String start(Model model,
+                        @PathVariable Long id) {
+        List<Test> tests = testService.getTeachersTests(id);
+        List<User> students = userService.getAllStudents();
+        model.addAttribute("tests", tests);
+        model.addAttribute("students", students);
+        return "test-students/assignTest";
+    }
+
+    @PostMapping("/start")
+    public String start(@ModelAttribute("recordForm") TestStudentsDTO dto) {
+        TestStudents testStudents = testStudentsService.assignTest(dto.getStudentId(), dto.getTestId());
+        return "redirect:/test-students/active/" + testStudents.getTest().getTeacher().getId();
+    }
+
+    @GetMapping("/return/{id}")
+    public String delete(@PathVariable Long id) {
+        TestStudents testStudents = testStudentsService.getById(id);
+        testStudentsService.returnTest(id);
+        return "redirect:/test-students/archive/" + testStudents.getTest().getTeacher().getId();
     }
 }

@@ -10,6 +10,7 @@ import ru.lobakina.educationalquizapp.repository.user.UserRepository;
 import ru.lobakina.educationalquizapp.service.generic.GenericService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService extends GenericService<User> {
@@ -47,5 +48,9 @@ public class UserService extends GenericService<User> {
 
     public Page<User> getStudents(Pageable pageable) {
         return userRepository.findStudents(pageable);
+    }
+
+    public List<User> getAllStudents() {
+        return userRepository.findStudents();
     }
 }

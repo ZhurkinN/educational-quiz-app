@@ -60,7 +60,20 @@ public interface RoleAccessEndpointConstantsKeeper {
             "/questions/add/{id}",
             "/questions/delete/{id}",
             "/questions/update/{id}"
-
     );
 
+    List<String> TEST_STUDENTS_TEACHER_PERMITTED_LIST = List.of(
+            "/test-students/active/{id}",
+            "/test-students/archive/{id}",
+            "/test-students/start/{id}",
+            "/test-students/start",
+            "/test-students/return/{id}"
+    );
+
+    List<String> TEST_GROUPS_TEACHER_PERMITTED_LIST = List.of(
+            "/test-groups/{id}",
+            "/test-groups/results/{id}",
+            "/test-groups/start/{id}",
+            "/test-groups/delete/{id}"
+    );
 }
