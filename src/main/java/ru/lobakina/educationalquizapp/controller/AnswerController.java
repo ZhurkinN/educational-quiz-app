@@ -5,16 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lobakina.educationalquizapp.controller.generic.GenericController;
 import ru.lobakina.educationalquizapp.model.question.Answer;
-import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.service.AnswerService;
 import ru.lobakina.educationalquizapp.service.QuestionService;
 import ru.lobakina.educationalquizapp.support.dto.AnswerDTO;
-import ru.lobakina.educationalquizapp.support.dto.QuestionDTO;
 import ru.lobakina.educationalquizapp.support.mapper.AnswerMapper;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/answers")
@@ -70,7 +66,7 @@ public class AnswerController extends GenericController<Answer> {
 
     @GetMapping("/add-variant/{id}")
     public String addVariant(Model model,
-                      @PathVariable Long id) {
+                             @PathVariable Long id) {
         model.addAttribute("questionId", id);
         return "answers/addVariant";
     }

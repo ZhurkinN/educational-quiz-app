@@ -13,5 +13,6 @@ import java.util.List;
 public interface TestRepository extends GenericRepository<Test> {
 
     Page<Test> findByTeacher(User user, Pageable pageable);
+
     List<Test> findByTeacher(User user);
 }

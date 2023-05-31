@@ -15,7 +15,6 @@ import ru.lobakina.educationalquizapp.repository.test.TestGroupsRepository;
 import ru.lobakina.educationalquizapp.repository.test.TestRepository;
 import ru.lobakina.educationalquizapp.repository.test.TestStudentsRepository;
 import ru.lobakina.educationalquizapp.repository.user.GroupRepository;
-import ru.lobakina.educationalquizapp.repository.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

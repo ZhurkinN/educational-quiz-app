@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.lobakina.educationalquizapp.model.test.TestGroups;
 import ru.lobakina.educationalquizapp.model.test.TestStudents;
+import ru.lobakina.educationalquizapp.model.user.User;
 
 @Repository
 public interface TestStudentsRepository extends JpaRepository<TestStudents, Long> {
@@ -26,4 +27,6 @@ public interface TestStudentsRepository extends JpaRepository<TestStudents, Long
     Page<TestStudents> findArchiveTestsByTeacher(Long id, Pageable pageable);
 
     Page<TestStudents> findByTestGroups(TestGroups testGroups, Pageable pageable);
+
+    Page<TestStudents> findByStudent(User student, Pageable pageable);
 }

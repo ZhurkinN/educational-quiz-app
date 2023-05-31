@@ -4,14 +4,14 @@
       layout:decorate="~{layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Архив</title>
+    <title>Назначенные тесты</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="mt-5">
         <div class="row">
             <div class="col">
-                <h2>Архив тестов</h2>
+                <h2>Список назначенных тестов</h2>
             </div>
         </div>
         <div>
@@ -19,24 +19,39 @@
                 <thead>
                 <tr>
                     <th scope="col">Тема теста</th>
-                    <th scope="col">ФИО студента</th>
-                    <th scope="col">Группа</th>
-                    <th scope="col">Дата выполнения</th>
-                    <th scope="col">Кол-во баллов</th>
+                    <th scope="col">Предмет</th>
+                    <th scope="col">Преподаватель</th>
+                    <th scope="col">Дедлайн</th>
+                    <th scope="col">Время на выполнение</th>
+                    <th scope="col">Тип назначения</th>
+                    <th scope="col">Оценка</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="record : ${records}">
                     <td th:text="${record.getTest().getTitle()}"></td>
-                    <td th:text="${record.getStudent().getFirstName()} + ' ' + ${record.getStudent().getMiddleName()} + ' ' + ${record.getStudent().getLastName()}"></td>
-                    <td th:text="${record.getStudent().getGroup().getGroupNumber()}"></td>
-                    <td th:text="${record.getTestDate()}"></td>
-                    <td th:text="${record.getScore().toString()} + '/' + ${record.getTest().getQuestionQuantity().toString()}"></td>
+                    <td th:text="${record.getTest().getSubject().getTitle()}"></td>
+                    <td th:text="${record.getTest().getTeacher().getLastName()} + ' ' + ${record.getTest().getTeacher().getFirstName()} + ' ' + ${record.getTest().getTeacher().getMiddleName()}"></td>
+                    <td th:text="${record.getTest().getDeadline()}"></td>
+                    <td th:text="${record.getTest().getDuration() + ' минут'}"></td>
+                    <td th:if="${record.getTestGroups() != null}">
+                        <a>Групповой</a>
+                    </td>
+                    <td th:unless="${record.getTestGroups() != null}">
+                        <a>Индивидуальный</a>
+                    </td>
+                    <td th:if="${record.getIsDone()}">
+                        <a th:text="${record.getScore().toString()} + '/' + ${record.getTest().getQuestionQuantity().toString()}"></a>
+                    </td>
+                    <td th:unless="${record.getIsDone()}">
+                        <a>----------</a>
+                    </td>
                     <td>
-                        <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
-                            <a class="btn btn-sm btn-outline-success"
-                               th:href="'/test-students/return/' + ${record.getId()}">Назначить заново</a>
+                        <div sec:authorize="isAuthenticated() && hasRole('STUDENT')">
+                            <a th:if="${!record.getIsDone()}" class="btn btn-sm btn-outline-success"
+                               onclick="return confirm('Сразу после подтверждения начнётся выполнение теста. Вы действительно хотите начать тест?');"
+                               th:href="'/test-students/perform/' + ${record.getId()}">Пройти тест</a>
                         </div>
                     </td>
                 </tr>
@@ -72,3 +87,4 @@
 </div>
 </body>
 </html>
+

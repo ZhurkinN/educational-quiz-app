@@ -1,6 +1,5 @@
 package ru.lobakina.educationalquizapp.support.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.support.dto.generic.GenericDTO;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

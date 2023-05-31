@@ -1,14 +1,11 @@
 package ru.lobakina.educationalquizapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lobakina.educationalquizapp.model.test.Subject;
-import ru.lobakina.educationalquizapp.model.test.Test;
 import ru.lobakina.educationalquizapp.service.SubjectService;
-import ru.lobakina.educationalquizapp.support.dto.TestDTO;
 
 import java.util.List;
 
@@ -45,7 +42,7 @@ public class SubjectController {
 
     @GetMapping("/update/{id}")
     public String update(Model model,
-                      @PathVariable Long id) {
+                         @PathVariable Long id) {
         model.addAttribute("subject", subjectService.getById(id));
         return "subjects/updateSubject";
     }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.model.user.Group;
-import ru.lobakina.educationalquizapp.model.user.User;
 
 import java.util.HashSet;
 import java.util.Set;

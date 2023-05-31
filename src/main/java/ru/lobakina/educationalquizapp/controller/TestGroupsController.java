@@ -16,7 +16,6 @@ import ru.lobakina.educationalquizapp.service.GroupService;
 import ru.lobakina.educationalquizapp.service.TestGroupsService;
 import ru.lobakina.educationalquizapp.service.TestService;
 import ru.lobakina.educationalquizapp.support.dto.TestGroupsDTO;
-import ru.lobakina.educationalquizapp.support.dto.TestStudentsDTO;
 
 import java.util.List;
 
@@ -54,6 +53,10 @@ public class TestGroupsController {
 
     @PostMapping("/start")
     public String start(@ModelAttribute("recordForm") TestGroupsDTO dto) {
+        Test test = testService.getById(dto.getTestId());
+        if (test.getQuestions().size() < 3) {
+            return "redirect:/test-groups/assignTest";
+        }
         TestGroups testGroups = testGroupsService.assignTest(dto.getGroupId(), dto.getTestId());
         return "redirect:/test-groups/" + testGroups.getTest().getTeacher().getId();
     }

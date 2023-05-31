@@ -2,7 +2,6 @@ package ru.lobakina.educationalquizapp.support.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.lobakina.educationalquizapp.model.user.User;
 import ru.lobakina.educationalquizapp.repository.user.GroupRepository;
 import ru.lobakina.educationalquizapp.repository.user.RoleRepository;

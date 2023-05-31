@@ -1,7 +1,6 @@
 package ru.lobakina.educationalquizapp.model.enums;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum Roles {

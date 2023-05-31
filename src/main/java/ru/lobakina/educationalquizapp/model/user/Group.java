@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.model.generic.GenericModel;
 import ru.lobakina.educationalquizapp.model.test.TestGroups;
-import ru.lobakina.educationalquizapp.model.test.TestStudents;
 
 import java.util.HashSet;
 import java.util.Set;

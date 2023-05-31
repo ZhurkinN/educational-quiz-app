@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lobakina.educationalquizapp.controller.generic.GenericController;
-import ru.lobakina.educationalquizapp.model.question.Answer;
 import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.service.QuestionService;
 import ru.lobakina.educationalquizapp.support.dto.QuestionDTO;

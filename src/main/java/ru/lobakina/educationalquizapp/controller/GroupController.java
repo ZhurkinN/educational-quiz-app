@@ -9,13 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.lobakina.educationalquizapp.controller.generic.GenericController;
-import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.model.user.Group;
-import ru.lobakina.educationalquizapp.model.user.User;
 import ru.lobakina.educationalquizapp.service.GroupService;
-import ru.lobakina.educationalquizapp.service.generic.GenericService;
-import ru.lobakina.educationalquizapp.support.dto.QuestionDTO;
-import ru.lobakina.educationalquizapp.support.dto.UserDTO;
 
 @Controller
 @RequestMapping("/groups")

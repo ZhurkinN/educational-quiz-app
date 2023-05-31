@@ -1,6 +1,5 @@
 package ru.lobakina.educationalquizapp.service.generic;
 
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

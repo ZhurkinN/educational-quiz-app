@@ -1,8 +1,6 @@
 package ru.lobakina.educationalquizapp.service;
 
-import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.jaxb.hbm.spi.SubEntityInfo;
 import org.springframework.stereotype.Service;
 import ru.lobakina.educationalquizapp.model.test.Subject;
 import ru.lobakina.educationalquizapp.repository.test.SubjectRepository;

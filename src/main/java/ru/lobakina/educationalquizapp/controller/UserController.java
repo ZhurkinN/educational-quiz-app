@@ -18,6 +18,7 @@ import ru.lobakina.educationalquizapp.repository.user.UserRepository;
 import ru.lobakina.educationalquizapp.service.GroupService;
 import ru.lobakina.educationalquizapp.service.UserService;
 import ru.lobakina.educationalquizapp.support.dto.UserDTO;
+import ru.lobakina.educationalquizapp.support.helper.BubbleSorter;
 import ru.lobakina.educationalquizapp.support.mapper.UserMapper;
 
 import java.util.List;
@@ -58,6 +59,17 @@ public class UserController extends GenericController<User> {
         Page<User> userPage = this.getAll(page, pageSize);
         model.addAttribute("users", userPage);
         return "/users/viewUsers";
+    }
+
+    @GetMapping("/sorted")
+    public String getAllSorted(@RequestParam(value = "page", defaultValue = "1") int page,
+                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                               Model model) {
+        List<User> users = BubbleSorter.sortUsers(userService.getAll().toArray(new User[0]));
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "firstName"));
+        Page<User> userPage = new PageImpl<>(users, pageRequest, users.size());
+        model.addAttribute("users", userPage);
+        return "/users/viewSortedUsers";
     }
 
     @GetMapping("/add")
@@ -140,7 +152,7 @@ public class UserController extends GenericController<User> {
                               Model model) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<User> modelPage = userService.getStudents(pageRequest);
-        Page<User> studentsPage =  new PageImpl<>(modelPage.getContent(), pageRequest, modelPage.getTotalElements());
+        Page<User> studentsPage = new PageImpl<>(modelPage.getContent(), pageRequest, modelPage.getTotalElements());
         model.addAttribute("users", studentsPage);
         return "/users/viewStudents";
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.model.generic.GenericModel;
+import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.model.user.User;
 
 import java.sql.Date;
@@ -52,4 +53,8 @@ public class Test extends GenericModel {
     @OneToMany(mappedBy = "test",
             cascade = CascadeType.ALL)
     private Set<TestGroups> testGroups = new HashSet<>();
+
+    @OneToMany(mappedBy = "test",
+            cascade = CascadeType.ALL)
+    private Set<Question> questions = new HashSet<>();
 }

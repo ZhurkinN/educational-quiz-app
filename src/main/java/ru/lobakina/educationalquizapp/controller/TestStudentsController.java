@@ -8,8 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.model.test.Test;
-import ru.lobakina.educationalquizapp.model.test.TestGroups;
 import ru.lobakina.educationalquizapp.model.test.TestStudents;
 import ru.lobakina.educationalquizapp.model.user.User;
 import ru.lobakina.educationalquizapp.service.TestService;
@@ -18,6 +18,7 @@ import ru.lobakina.educationalquizapp.service.UserService;
 import ru.lobakina.educationalquizapp.support.dto.TestStudentsDTO;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/test-students")
@@ -64,6 +65,10 @@ public class TestStudentsController {
 
     @PostMapping("/start")
     public String start(@ModelAttribute("recordForm") TestStudentsDTO dto) {
+        Test test = testService.getById(dto.getTestId());
+        if (test.getQuestions().size() < 3) {
+            return "redirect:/test-students/assignTest";
+        }
         TestStudents testStudents = testStudentsService.assignTest(dto.getStudentId(), dto.getTestId());
         return "redirect:/test-students/active/" + testStudents.getTest().getTeacher().getId();
     }
@@ -74,4 +79,29 @@ public class TestStudentsController {
         testStudentsService.returnTest(id);
         return "redirect:/test-students/archive/" + testStudents.getTest().getTeacher().getId();
     }
+
+    @GetMapping("/given/{id}")
+    public String getPersonalStudentsTests(@RequestParam(value = "page", defaultValue = "1") int page,
+                                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                           Model model,
+                                           @PathVariable Long id) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<TestStudents> testPage = testStudentsService.findTestsByStudent(id, pageRequest);
+        Page<TestStudents> finalTestPage = new PageImpl<>(testPage.getContent(), pageRequest, testPage.getTotalElements());
+        model.addAttribute("records", finalTestPage);
+        return "/test-students/viewStudentTests";
+    }
+
+    @GetMapping("/perform/{id}")
+    public String performTest(@PathVariable Long id,
+                              Model model) {
+        TestStudents testStudents = testStudentsService.getById(id);
+        Test test = testStudents.getTest();
+        Set<Question> questions = test.getQuestions();
+
+        model.addAttribute("questions", questions);
+        model.addAttribute("test", test);
+        return "tests/performTest";
+    }
+
 }

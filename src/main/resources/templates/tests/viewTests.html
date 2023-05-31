@@ -55,10 +55,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="test : ${tests}">
-                    <td>
-                        <a class="text-link text-blue" th:href="'/tests/' + ${test.getId()}"
-                           th:text="${test.getTitle()}"></a>
-                    </td>
+                    <td th:text="${test.getTitle()}"></td>
                     <td th:text="${test.getDescription()}"></td>
                     <td th:text="${test.getDeadline()}"></td>
                     <td th:text="${test.getDuration()}"></td>

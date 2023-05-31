@@ -41,7 +41,7 @@ public class QuestionService extends GenericService<Question> {
     @Override
     @Transactional
     public Question create(Question model) {
-        Question question =  super.create(model);
+        Question question = super.create(model);
         Test test = question.getTest();
         test.setQuestionQuantity(test.getQuestionQuantity() + 1);
         testRepository.save(test);

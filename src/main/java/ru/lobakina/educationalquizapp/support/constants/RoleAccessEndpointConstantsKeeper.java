@@ -15,6 +15,7 @@ public interface RoleAccessEndpointConstantsKeeper {
     );
     List<String> USERS_PERMITTED_LIST = List.of(
             "/users",
+            "/users/sorted",
             "/users/add",
             "/users/delete/{id}",
             "/users/update/{id}"
@@ -50,9 +51,9 @@ public interface RoleAccessEndpointConstantsKeeper {
 
     List<String> ANSWERS_PERMITTED_LIST = List.of(
             "/answers/{id}",
-            "answers/add/{id}",
-            "answers/delete/{id}",
-            "answers/add-variant/{id}"
+            "/answers/add/{id}",
+            "/answers/delete/{id}",
+            "/answers/add-variant/{id}"
     );
 
     List<String> QUESTION_PERMITTED_LIST = List.of(
@@ -68,6 +69,11 @@ public interface RoleAccessEndpointConstantsKeeper {
             "/test-students/start/{id}",
             "/test-students/start",
             "/test-students/return/{id}"
+    );
+
+    List<String> TEST_STUDENTS_STUDENT_PERMITTED_LIST = List.of(
+            "/test-students/given/{id}",
+            "/test-students/perform/{id}"
     );
 
     List<String> TEST_GROUPS_TEACHER_PERMITTED_LIST = List.of(

@@ -51,4 +51,9 @@ public class TestStudentsService {
                 .setIsDone(false);
         testStudentsRepository.save(testStudents);
     }
+
+    public Page<TestStudents> findTestsByStudent(Long id, Pageable pageRequest) {
+        User student = userRepository.findById(id).orElseThrow();
+        return testStudentsRepository.findByStudent(student, pageRequest);
+    }
 }

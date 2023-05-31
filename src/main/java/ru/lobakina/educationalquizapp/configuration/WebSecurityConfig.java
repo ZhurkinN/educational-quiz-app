@@ -14,8 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.lobakina.educationalquizapp.service.security.ApplicationUserDetailsService;
 
 import static ru.lobakina.educationalquizapp.support.constants.RoleAccessEndpointConstantsKeeper.*;
-import static ru.lobakina.educationalquizapp.support.constants.RoleNameConstantsKeeper.ADMIN;
-import static ru.lobakina.educationalquizapp.support.constants.RoleNameConstantsKeeper.TEACHER;
+import static ru.lobakina.educationalquizapp.support.constants.RoleNameConstantsKeeper.*;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +36,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(SUBJECTS_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(ADMIN)
                                 .requestMatchers(GROUPS_ADMIN_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(ADMIN)
                                 .requestMatchers(TESTS_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
+                                .requestMatchers(TEST_STUDENTS_STUDENT_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(STUDENT)
                                 .requestMatchers(TEST_GROUPS_TEACHER_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
                                 .requestMatchers(TEST_STUDENTS_TEACHER_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
                                 .requestMatchers(ANSWERS_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
