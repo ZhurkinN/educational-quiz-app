@@ -8,6 +8,8 @@ import lombok.experimental.Accessors;
 import ru.lobakina.educationalquizapp.model.user.User;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -42,4 +44,8 @@ public class TestStudents {
             cascade = CascadeType.REFRESH)
     @JoinColumn(name = "test_group_id")
     private TestGroups testGroups;
+
+    @OneToMany(mappedBy = "test",
+            cascade = CascadeType.ALL)
+    private Set<StudentAnswer> studentAnswers = new HashSet<>();
 }

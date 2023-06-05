@@ -5,6 +5,15 @@
 <head>
     <meta charset="utf-8"/>
     <title>Выполнение теста</title>
+    <style>
+        tr.spaceUnder > td {
+            padding-bottom: 2em;
+        }
+
+        th {
+            text-align: center;
+        }
+    </style>
     <script>
         function startCountdown() {
             let minutes = document.getElementById("minutes").value;
@@ -25,7 +34,7 @@
                     clearInterval(countdownInterval);
                     timerElement.innerHTML = "Время вышло!";
                     setTimeout(function () {
-                        window.location.href = "http://example.com";
+                        window.location.href = "/test-students/end-test";
                     }, 2000);
                 } else {
                     seconds--;
@@ -38,12 +47,44 @@
 <div layout:fragment="content">
     <h3 class="mt-3 mb-3" th:text="${test.getTitle()}"></h3>
     <div class="countdown">
-        <input type="number" id="minutes" min="1" max="60" th:value="${test.getDuration()}" hidden>
+        <input type="number" id="minutes" min="1" max="350" th:value="${test.getDuration()}" hidden>
         <h5 class="mt-3 mb-3" id="timer"></h5>
     </div>
     <form method="POST" class="needs-validation" novalidate style="max-width: 50vw"
           th:action="@{/test-students/end-test}"
           th:object="${testForm}">
+        <div class="form-floating">
+            <input name="testId" type="text" class="form-control" id="testId" th:value="${testId}" placeholder="testId"
+                   required hidden>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr class="spaceUnder">
+                <th scope="col">№</th>
+                <th scope="col">Вопрос</th>
+                <th scope="col">Ответ</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="spaceUnder" th:each="question, stats : ${questions}">
+                <input th:name="${'question' + (stats.index + 1)}" type="text" class="form-control"
+                       th:value="${question.getId()}" placeholder="testId"
+                       required hidden>
+                <td th:text="${stats.index + 1}"></td>
+                <td th:text="${question.getText()}"></td>
+                <td th:if="${question.getQuestionType().getTypeName().equals('Обычный вопрос')}">
+                    <input th:name="${'answer' + (stats.index + 1)}" type="text" placeholder="Введите ответ"
+                           required>
+                </td>
+                <td th:unless="${question.getQuestionType().getTypeName().equals('Обычный вопрос')}">
+                    <div th:each="variant : ${question.getQuestionAnswers()}">
+                        <input type="radio" th:name="${'answer' + (stats.index + 1)}" th:value="${variant.getText()}"
+                               th:text="${variant.getText()}">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <div class="mt-3 row g-2">
             <button type="submit" onclick="return confirm('Вы действительно хотите завершить тест?');"

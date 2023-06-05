@@ -73,7 +73,12 @@ public interface RoleAccessEndpointConstantsKeeper {
 
     List<String> TEST_STUDENTS_STUDENT_PERMITTED_LIST = List.of(
             "/test-students/given/{id}",
-            "/test-students/perform/{id}"
+            "/test-students/perform/{id}",
+            "/test-students/end-test"
+    );
+
+    List<String> TEST_STUDENTS_STUDENT_AND_TEACHER_PERMITTED_LIST = List.of(
+            "/test-students/results/{id}"
     );
 
     List<String> TEST_GROUPS_TEACHER_PERMITTED_LIST = List.of(

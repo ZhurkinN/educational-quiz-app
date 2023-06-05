@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(SUBJECTS_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(ADMIN)
                                 .requestMatchers(GROUPS_ADMIN_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(ADMIN)
                                 .requestMatchers(TESTS_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
+                                .requestMatchers(TEST_STUDENTS_STUDENT_AND_TEACHER_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER, STUDENT)
                                 .requestMatchers(TEST_STUDENTS_STUDENT_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(STUDENT)
                                 .requestMatchers(TEST_GROUPS_TEACHER_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)
                                 .requestMatchers(TEST_STUDENTS_TEACHER_PERMITTED_LIST.toArray(String[]::new)).hasAnyRole(TEACHER)

@@ -15,12 +15,13 @@
             </div>
             <div class="col">
                 <a
+                        th:if="${questions.size() < 51}"
                         sec:authorize="isAuthenticated() && hasRole('TEACHER')"
                         th:href="'/questions/add/' + ${testId}"
                         class="btn btn-success"
                         role="button"
                         style="float: right"
-                aria-disabled="true">Добавить вопрос</a>
+                        aria-disabled="true">Добавить вопрос</a>
             </div>
             <div class="col">
                 <a class="btn btn-warning"

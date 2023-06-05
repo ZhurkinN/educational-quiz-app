@@ -12,12 +12,16 @@ import ru.lobakina.educationalquizapp.model.question.Question;
 import ru.lobakina.educationalquizapp.model.test.Test;
 import ru.lobakina.educationalquizapp.model.test.TestStudents;
 import ru.lobakina.educationalquizapp.model.user.User;
+import ru.lobakina.educationalquizapp.service.StudentAnswerService;
 import ru.lobakina.educationalquizapp.service.TestService;
 import ru.lobakina.educationalquizapp.service.TestStudentsService;
 import ru.lobakina.educationalquizapp.service.UserService;
+import ru.lobakina.educationalquizapp.support.dto.EndTestDTO;
 import ru.lobakina.educationalquizapp.support.dto.TestStudentsDTO;
+import ru.lobakina.educationalquizapp.support.mapper.ResultMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -28,6 +32,8 @@ public class TestStudentsController {
     private final TestStudentsService testStudentsService;
     private final TestService testService;
     private final UserService userService;
+    private final ResultMapper resultMapper;
+    private final StudentAnswerService studentAnswerService;
 
     @GetMapping("/active/{id}")
     public String getTeachersActiveTests(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -101,7 +107,27 @@ public class TestStudentsController {
 
         model.addAttribute("questions", questions);
         model.addAttribute("test", test);
+        model.addAttribute("testId", id);
         return "tests/performTest";
+    }
+
+    @PostMapping("/end-test")
+    public String endTest(@ModelAttribute("testForm") EndTestDTO dto) {
+
+        TestStudents testStudents = testStudentsService.getById(dto.testId());
+        Map<Question, String> results = resultMapper.putResultsToMap(dto);
+        studentAnswerService.handleResults(testStudents, results);
+        return "redirect:/test-students/results/" + testStudents.getId();
+    }
+
+    @GetMapping("/results/{id}")
+    public String getTestResults(@PathVariable Long id,
+                                 Model model) {
+
+        TestStudents testStudents = testStudentsService.getById(id);
+        model.addAttribute("results", testStudents.getStudentAnswers());
+        model.addAttribute("testStudents", testStudents);
+        return "tests/viewResults";
     }
 
 }

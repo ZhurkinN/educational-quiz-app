@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Результаты теста</title>
+    <style>
+        tr.spaceUnder > td {
+            padding-bottom: 2em;
+        }
+
+        th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="mt-3 mb-3">Ваши результаты</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="spaceUnder">
+            <th scope="col">№</th>
+            <th scope="col">Вопрос</th>
+            <th scope="col">Ваш ответ</th>
+            <th scope="col">Правильный ответ</th>
+            <th scope="col">Кол-во баллов</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="spaceUnder" th:each="result, stats : ${results}">
+            <td th:text="${stats.index + 1}"></td>
+            <td th:text="${result.getQuestion().getText()}"></td>
+            <td th:text="${result.getAnswer()}"></td>
+            <td th:text="${T(ru.lobakina.educationalquizapp.support.helper.RightAnswerHandler).getRightQuestionAnswer(result.getQuestion())}"></td>
+            <td th:if="${result.getIsRight()}">
+                <a style="color: lime">1</a>
+            </td>
+            <td th:unless="${result.getIsRight()}">
+                <a style="color: red;">0</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h3 class="mt-3 mb-3"
+        th:text="'Всего за тест: ' + ${testStudents.getScore()} + '/' + ${testStudents.getTest().getQuestionQuantity()}"></h3>
+    <div class="mt-3 row g-2" sec:authorize="isAuthenticated() && hasRole('STUDENT')">
+        <a type="submit" role="button" class="btn btn-primary"
+           th:href="'/test-students/given/' + ${#authentication.getPrincipal().getUserId()}">Перейти к другим
+            результатам</a>
+    </div>
+    <div class="mt-3 row g-2" sec:authorize="isAuthenticated() && hasRole('TEACHER')">
+        <a type="submit" role="button" class="btn btn-primary" onclick="window.history.back()">Перейти к другим
+            результатам</a>
+    </div>
+</div>
+</body>
+</html>

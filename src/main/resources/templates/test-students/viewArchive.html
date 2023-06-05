@@ -37,6 +37,8 @@
                         <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
                             <a class="btn btn-sm btn-outline-success"
                                th:href="'/test-students/return/' + ${record.getId()}">Назначить заново</a>
+                            <a th:if="${record.getIsDone()}" class="btn btn-sm btn-outline-warning"
+                               th:href="'/test-students/results/' + ${record.getId()}">Посмотреть результаты</a>
                         </div>
                     </td>
                 </tr>

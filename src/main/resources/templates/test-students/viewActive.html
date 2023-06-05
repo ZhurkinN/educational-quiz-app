@@ -42,11 +42,11 @@
                     <td th:text="${record.getTest().getDeadline()}"></td>
                     <td>
                         <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
-<!--                            <a class="btn btn-sm btn-outline-success"-->
-<!--                               th:href="'/subjects/update/' + ${subject.getId()}">Редактировать</a>-->
-<!--                            <a class="btn btn-sm btn-outline-danger"-->
-<!--                               th:href="'/subjects/delete/' + ${subject.getId()}"-->
-<!--                               onclick="return confirm('Вы действительно хотите удалить дисциплину?');">Удалить</a>-->
+                            <!--                            <a class="btn btn-sm btn-outline-success"-->
+                            <!--                               th:href="'/subjects/update/' + ${subject.getId()}">Редактировать</a>-->
+                            <!--                            <a class="btn btn-sm btn-outline-danger"-->
+                            <!--                               th:href="'/subjects/delete/' + ${subject.getId()}"-->
+                            <!--                               onclick="return confirm('Вы действительно хотите удалить дисциплину?');">Удалить</a>-->
                         </div>
                     </td>
                 </tr>

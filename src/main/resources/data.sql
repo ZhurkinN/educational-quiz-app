@@ -22,10 +22,12 @@ values ('9413', 'FVT');
 
 insert into users(birth_date, email, first_name, gender, last_name, login, middle_name, password, telephone_number,
                   group_id, role_id)
-values (now(), 'ivanov@mail.ru', 'Иван', 'Мужской', 'Иванов', 'ivanov', 'Иванович', '$2y$10$J3FI9sLhOpIoBr.NA0uSPOi7tGxpf9R7SzHkY4.YKKKx3mrX31uhe', '89008909292', 1, 2);
+values (now(), 'ivanov@mail.ru', 'Иван', 'Мужской', 'Иванов', 'ivanov', 'Иванович',
+        '$2y$10$J3FI9sLhOpIoBr.NA0uSPOi7tGxpf9R7SzHkY4.YKKKx3mrX31uhe', '89008909292', 1, 2);
 insert into users(birth_date, email, first_name, gender, last_name, login, middle_name, password, telephone_number,
                   group_id, role_id)
-values (now(), 'ivanov@mail.ru', 'Иван', 'Мужской', 'Иванов', 'qwe', 'Иванович', '$2y$10$a44nE.YPXrQ4IO0LuLRLZOfDCociRGbTjWbsrVB2fTMot3GAtYT2C', '89008909292', null, 1);
+values (now(), 'ivanov@mail.ru', 'Иван', 'Мужской', 'Иванов', 'qwe', 'Иванович',
+        '$2y$10$a44nE.YPXrQ4IO0LuLRLZOfDCociRGbTjWbsrVB2fTMot3GAtYT2C', '89008909292', null, 1);
 insert into users(birth_date, email, first_name, gender, last_name, login, middle_name, password, telephone_number,
                   group_id, role_id)
 values (now(), 'petrov@mail.ru', 'Пётр', 'Мужской', 'Петров', 'petrov', 'Иванович', '2', '89008909292', 1, 2);
@@ -34,7 +36,7 @@ insert into test (deadline, description, duration, title, subject_id, teacher_id
 values ('2023-06-10', 'best test', 30, 'Дифференциальные уравнения', 1, 2, 3);
 
 insert into test (deadline, description, duration, title, subject_id, teacher_id, question_quantity)
-    values ('2023-06-10', 'java core', 45, 'Программирование на Java', 3, 2, 3);
+values ('2023-06-10', 'java core', 45, 'Программирование на Java', 3, 2, 3);
 
 insert into question (text, question_type_id, test_id)
 values ('В каком году родился С.А. Пушкин?', 2, 1);
@@ -74,15 +76,15 @@ values (true, 'Рим', 3);
 
 insert into answer (is_right, text, question_id)
 values (true, 'private', 4);
+insert into answer (is_right, text, question_id)
+values (false, 'public', 4);
+insert into answer (is_right, text, question_id)
+values (false, 'protected', 4);
+insert into answer (is_right, text, question_id)
+values (false, 'package-default', 4);
 
 insert into answer (is_right, text, question_id)
 values (true, '7', 5);
-insert into answer (is_right, text, question_id)
-values (false, '10', 5);
-insert into answer (is_right, text, question_id)
-values (false, '3', 5);
-insert into answer (is_right, text, question_id)
-values (false, '5', 5);
 
 insert into answer (is_right, text, question_id)
 values (true, 'хз', 6);
@@ -92,4 +94,9 @@ values (2, now(), 1, 1, true);
 insert into test_students (student_id, test_id)
 values (1, 2);
 
-
+insert into student_answer (answer, is_right, question_id, test_students_id)
+values ('1799', true, 1, 1);
+insert into student_answer (answer, is_right, question_id, test_students_id)
+values ('100', true, 2, 1);
+insert into student_answer (answer, is_right, question_id, test_students_id)
+values ('Мадрид', false, 3, 1);

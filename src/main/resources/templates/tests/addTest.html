@@ -35,14 +35,16 @@
         <div class="mt-3 row g-2">
             <div class="col-md">
                 <div class="form-floating">
-                    <input name="duration" type="number" value="60" class="form-control" id="duration" placeholder="Введите длительность выполнения"
+                    <input name="duration" type="number" value="60" class="form-control" id="duration"
+                           placeholder="Введите длительность выполнения"
                            required>
                     <label for="duration">Длительность выполнения (в минутах)</label>
                     <div class="invalid-feedback">Обязательное поле для заполнения</div>
                 </div>
             </div>
             <div class="form-floating">
-                <input name="deadline" type="date" class="form-control" id="deadline" placeholder="Введите дату дедлайна" required>
+                <input name="deadline" type="date" class="form-control" id="deadline"
+                       placeholder="Введите дату дедлайна" required>
                 <label for="deadline">Дата дедлайна</label>
                 <div class="invalid-feedback">Обязательное поле для заполнения</div>
             </div>
@@ -62,7 +64,8 @@
             </div>
             <div class="col-md" hidden>
                 <div class="form-floating">
-                    <input name="teacher" type="text" class="form-control" id="teacher" th:value="${#authentication.getPrincipal().getUserId()}" placeholder="teacher"
+                    <input name="teacher" type="text" class="form-control" id="teacher"
+                           th:value="${#authentication.getPrincipal().getUserId()}" placeholder="teacher"
                            required hidden>
                 </div>
             </div>
