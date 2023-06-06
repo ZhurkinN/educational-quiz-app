@@ -36,7 +36,7 @@ insert into test (deadline, description, duration, title, subject_id, teacher_id
 values ('2023-06-10', 'best test', 30, 'Дифференциальные уравнения', 1, 2, 3);
 
 insert into test (deadline, description, duration, title, subject_id, teacher_id, question_quantity)
-values ('2023-06-10', 'java core', 45, 'Программирование на Java', 3, 2, 3);
+values ('2023-06-10', 'java core', 1, 'Программирование на Java', 3, 2, 3);
 
 insert into question (text, question_type_id, test_id)
 values ('В каком году родился С.А. Пушкин?', 2, 1);

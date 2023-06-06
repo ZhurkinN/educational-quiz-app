@@ -34,7 +34,8 @@
                     clearInterval(countdownInterval);
                     timerElement.innerHTML = "Время вышло!";
                     setTimeout(function () {
-                        window.location.href = "/test-students/end-test";
+                        const finishButton = document.getElementById("hidden-finish-button");
+                        finishButton.click();
                     }, 2000);
                 } else {
                     seconds--;
@@ -89,6 +90,9 @@
         <div class="mt-3 row g-2">
             <button type="submit" onclick="return confirm('Вы действительно хотите завершить тест?');"
                     class="btn btn-primary">Завершить тест
+            </button>
+            <button type="submit" id="hidden-finish-button"
+                    class="btn btn-primary" hidden>Завершить тест
             </button>
         </div>
     </form>
