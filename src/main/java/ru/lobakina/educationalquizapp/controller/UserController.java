@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -37,6 +38,7 @@ public class UserController extends GenericController<User> {
     private final UserMapper userMapper;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     /**
      * Constructor
@@ -46,18 +48,20 @@ public class UserController extends GenericController<User> {
      * @param userMapper      user's mapper
      * @param groupRepository group's repo
      * @param userRepository  user's repo
+     * @param encoder
      */
     public UserController(UserService userService,
                           GroupService groupService,
                           UserMapper userMapper,
                           GroupRepository groupRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository, BCryptPasswordEncoder encoder) {
         super(userService);
         this.userService = userService;
         this.groupService = groupService;
         this.userMapper = userMapper;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     /**
@@ -156,6 +160,7 @@ public class UserController extends GenericController<User> {
                 .stream()
                 .map(Group::getGroupNumber)
                 .toList();
+        User user = userService.getById(id);
         model.addAttribute("groups", groups);
         model.addAttribute("user", userService.getById(id));
         return "users/updateUser";
@@ -177,7 +182,7 @@ public class UserController extends GenericController<User> {
         }
         User user = userService.getById(userDto.getId());
         user.setLogin(userDto.getLogin());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encoder.encode(userDto.getPassword()));
         if (!Objects.isNull(userDto.getGroup())) {
             user.setGroup(groupRepository.findByGroupNumber(userDto.getGroup()));
         }
