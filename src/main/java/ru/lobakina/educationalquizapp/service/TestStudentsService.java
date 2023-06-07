@@ -4,12 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.lobakina.educationalquizapp.model.question.Question;
+import ru.lobakina.educationalquizapp.model.test.StudentAnswer;
 import ru.lobakina.educationalquizapp.model.test.Test;
 import ru.lobakina.educationalquizapp.model.test.TestStudents;
 import ru.lobakina.educationalquizapp.model.user.User;
+import ru.lobakina.educationalquizapp.repository.StudentAnswerRepository;
 import ru.lobakina.educationalquizapp.repository.test.TestRepository;
 import ru.lobakina.educationalquizapp.repository.test.TestStudentsRepository;
 import ru.lobakina.educationalquizapp.repository.user.UserRepository;
+
+import java.sql.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +24,7 @@ public class TestStudentsService {
     private final TestStudentsRepository testStudentsRepository;
     private final UserRepository userRepository;
     private final TestRepository testRepository;
+    private final StudentAnswerRepository studentAnswerRepository;
 
     public TestStudents assignTest(Long studentId,
                                    Long testId) {
@@ -31,6 +38,8 @@ public class TestStudentsService {
     }
 
     public Page<TestStudents> findActiveTestsByTeacher(Long id, Pageable pageable) {
+        List<TestStudents> studentsTests = testStudentsRepository.findActiveTestsByTeacher(id);
+        checkDeadline(studentsTests);
         return testStudentsRepository.findActiveTestsByTeacher(id, pageable);
     }
 
@@ -54,6 +63,30 @@ public class TestStudentsService {
 
     public Page<TestStudents> findTestsByStudent(Long id, Pageable pageRequest) {
         User student = userRepository.findById(id).orElseThrow();
+        List<TestStudents> studentsTests = testStudentsRepository.findByStudent(student);
+        checkDeadline(studentsTests);
         return testStudentsRepository.findByStudent(student, pageRequest);
+    }
+
+    private void checkDeadline(List<TestStudents> studentsTests) {
+
+        for (TestStudents testStudents : studentsTests) {
+            Date deadline = testStudents.getTest().getDeadline();
+
+            if (!testStudents.getIsDone() && deadline.before(new Date(System.currentTimeMillis()))) {
+                testStudents.setScore(0)
+                        .setIsDone(true)
+                        .setTestDate(deadline);
+                testStudentsRepository.save(testStudents);
+                for (Question question : testStudents.getTest().getQuestions()) {
+                    StudentAnswer studentAnswer = new StudentAnswer()
+                            .setAnswer("")
+                            .setTest(testStudents)
+                            .setIsRight(false)
+                            .setQuestion(question);
+                    studentAnswerRepository.save(studentAnswer);
+                }
+            }
+        }
     }
 }

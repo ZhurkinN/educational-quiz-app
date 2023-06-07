@@ -13,7 +13,6 @@ import ru.lobakina.educationalquizapp.controller.generic.GenericController;
 import ru.lobakina.educationalquizapp.model.user.Group;
 import ru.lobakina.educationalquizapp.model.user.User;
 import ru.lobakina.educationalquizapp.repository.user.GroupRepository;
-import ru.lobakina.educationalquizapp.repository.user.RoleRepository;
 import ru.lobakina.educationalquizapp.repository.user.UserRepository;
 import ru.lobakina.educationalquizapp.service.GroupService;
 import ru.lobakina.educationalquizapp.service.UserService;
@@ -26,6 +25,9 @@ import java.util.Objects;
 
 import static ru.lobakina.educationalquizapp.support.constants.RoleNameConstantsKeeper.ADMIN;
 
+/**
+ * Controller for all actions with users
+ */
 @Controller
 @RequestMapping("/users")
 public class UserController extends GenericController<User> {
@@ -35,23 +37,37 @@ public class UserController extends GenericController<User> {
     private final UserMapper userMapper;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
+    /**
+     * Constructor
+     *
+     * @param userService     user's service
+     * @param groupService    group's service
+     * @param userMapper      user's mapper
+     * @param groupRepository group's repo
+     * @param userRepository  user's repo
+     */
     public UserController(UserService userService,
                           GroupService groupService,
                           UserMapper userMapper,
                           GroupRepository groupRepository,
-                          UserRepository userRepository,
-                          RoleRepository roleRepository) {
+                          UserRepository userRepository) {
         super(userService);
         this.userService = userService;
         this.groupService = groupService;
         this.userMapper = userMapper;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
+    /**
+     * Shows all users
+     *
+     * @param page     page
+     * @param pageSize size of page
+     * @param model    model
+     * @return page
+     */
     @GetMapping
     public String getAll(@RequestParam(value = "page", defaultValue = "1") int page,
                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -61,6 +77,14 @@ public class UserController extends GenericController<User> {
         return "/users/viewUsers";
     }
 
+    /**
+     * Sorts users by FIO
+     *
+     * @param page     page
+     * @param pageSize size of page
+     * @param model    model
+     * @return page
+     */
     @GetMapping("/sorted")
     public String getAllSorted(@RequestParam(value = "page", defaultValue = "1") int page,
                                @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -72,6 +96,12 @@ public class UserController extends GenericController<User> {
         return "/users/viewSortedUsers";
     }
 
+    /**
+     * Shows page for adding users
+     *
+     * @param model model
+     * @return page
+     */
     @GetMapping("/add")
     public String addUser(Model model) {
         List<String> groups = groupService.getAll()
@@ -82,6 +112,13 @@ public class UserController extends GenericController<User> {
         return "users/addUser";
     }
 
+    /**
+     * Adds new user
+     *
+     * @param userDto       user's info
+     * @param bindingResult binding for errors
+     * @return page
+     */
     @PostMapping("/add")
     public String addUser(@ModelAttribute("userForm") UserDTO userDto,
                           BindingResult bindingResult) {
@@ -93,12 +130,25 @@ public class UserController extends GenericController<User> {
         return "redirect:/users";
     }
 
+    /**
+     * Deletes user
+     *
+     * @param id user's id
+     * @return page
+     */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         userService.delete(id);
         return "redirect:/users";
     }
 
+    /**
+     * Shows page for updating users
+     *
+     * @param id    user's id
+     * @param model model
+     * @return page
+     */
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id,
                          Model model) {
@@ -111,6 +161,13 @@ public class UserController extends GenericController<User> {
         return "users/updateUser";
     }
 
+    /**
+     * Updates user
+     *
+     * @param userDto       user's info
+     * @param bindingResult binding for errors
+     * @return page
+     */
     @PostMapping("/update")
     public String update(@ModelAttribute("userForm") UserDTO userDto,
                          BindingResult bindingResult) {
@@ -128,6 +185,15 @@ public class UserController extends GenericController<User> {
         return "redirect:/users";
     }
 
+    /**
+     * Seaches users
+     *
+     * @param page    page
+     * @param size    size of page
+     * @param userDTO search details
+     * @param model   model
+     * @return page
+     */
     @PostMapping("/search")
     public String searchUsers(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -146,6 +212,14 @@ public class UserController extends GenericController<User> {
         }
     }
 
+    /**
+     * Shows all students
+     *
+     * @param page     page
+     * @param pageSize size of page
+     * @param model    model
+     * @return page
+     */
     @GetMapping("/students")
     public String getStudents(@RequestParam(value = "page", defaultValue = "1") int page,
                               @RequestParam(value = "size", defaultValue = "10") int pageSize,

@@ -16,6 +16,9 @@ import ru.lobakina.educationalquizapp.service.UserService;
 import static ru.lobakina.educationalquizapp.model.enums.Roles.STUDENT;
 import static ru.lobakina.educationalquizapp.support.constants.RoleNameConstantsKeeper.ADMIN;
 
+/**
+ * Controller for registration and authorization
+ */
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -24,11 +27,21 @@ public class MainController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    /**
+     * Shows main page
+     *
+     * @return page
+     */
     @GetMapping("/")
     public String index() {
         return "index";
     }
 
+    /**
+     * Authorizes user
+     *
+     * @return page
+     */
     @GetMapping("/login")
     public String login() {
         if (SecurityContextHolder.getContext().getAuthentication() != null &&
@@ -39,11 +52,23 @@ public class MainController {
         return "users/login";
     }
 
+    /**
+     * Show registration page
+     *
+     * @return page
+     */
     @GetMapping("/register")
     public String register() {
         return "users/register";
     }
 
+    /**
+     * Registers user
+     *
+     * @param user          user's info
+     * @param bindingResult binding for errors
+     * @return page
+     */
     @PostMapping("/register")
     public String registration(@ModelAttribute("userForm") User user,
                                BindingResult bindingResult) {

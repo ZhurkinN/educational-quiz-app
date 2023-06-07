@@ -17,6 +17,9 @@ import ru.lobakina.educationalquizapp.support.mapper.TestMapper;
 
 import java.util.List;
 
+/**
+ * Controller for all actions with tests
+ */
 @Controller
 @RequestMapping("/tests")
 public class TestController extends GenericController<Test> {
@@ -26,6 +29,13 @@ public class TestController extends GenericController<Test> {
     private final SubjectService subjectService;
 
 
+    /**
+     * Constructor
+     *
+     * @param testService    service
+     * @param testMapper     mapper
+     * @param subjectService subject service
+     */
     public TestController(TestService testService, TestMapper testMapper, SubjectService subjectService) {
         super(testService);
         this.testService = testService;
@@ -33,6 +43,14 @@ public class TestController extends GenericController<Test> {
         this.subjectService = subjectService;
     }
 
+    /**
+     * Shows all created tests
+     *
+     * @param page     page
+     * @param pageSize size of page
+     * @param model    model
+     * @return page
+     */
     @GetMapping
     public String getAll(@RequestParam(value = "page", defaultValue = "1") int page,
                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -42,6 +60,14 @@ public class TestController extends GenericController<Test> {
         return "/tests/viewTests";
     }
 
+    /**
+     * Shows all teacher's created tests
+     *
+     * @param page     page
+     * @param pageSize size of page
+     * @param id       teacher id
+     * @param model    model
+     */
     @GetMapping("/history/{id}")
     public String getById(@RequestParam(value = "page", defaultValue = "1") int page,
                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -54,6 +80,12 @@ public class TestController extends GenericController<Test> {
         return "/tests/viewTests";
     }
 
+    /**
+     * Shows page for adding new test
+     *
+     * @param model model
+     * @return page
+     */
     @GetMapping("/add")
     public String addTest(Model model) {
         List<String> subjects = subjectService.getAll()
@@ -64,18 +96,37 @@ public class TestController extends GenericController<Test> {
         return "tests/addTest";
     }
 
+    /**
+     * Adds new test
+     *
+     * @param testDTO test info
+     * @return page
+     */
     @PostMapping("/add")
     public String addTest(@ModelAttribute("testForm") TestDTO testDTO) {
         testService.create(testMapper.toEntity(testDTO));
         return "redirect:/tests/history/" + testDTO.getTeacher();
     }
 
+    /**
+     * Deletes test
+     *
+     * @param id tests id
+     * @return page
+     */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         testService.delete(id);
         return "redirect:/";
     }
 
+    /**
+     * Shows page for updating test
+     *
+     * @param id    test id
+     * @param model model
+     * @return page
+     */
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id,
                          Model model) {
@@ -88,6 +139,12 @@ public class TestController extends GenericController<Test> {
         return "tests/updateTest";
     }
 
+    /**
+     * Updates test
+     *
+     * @param testDTO test's new info
+     * @return page
+     */
     @PostMapping("/update")
     public String updateTest(@ModelAttribute("testForm") TestDTO testDTO) {
         testService.update(testMapper.toEntity(testDTO));

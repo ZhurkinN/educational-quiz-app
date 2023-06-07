@@ -31,6 +31,7 @@
                     <th scope="col">Номер группы</th>
                     <th scope="col">Готовность</th>
                     <th scope="col">Кол-во выполнивших студентов</th>
+                    <th scope="col">Средний балл по группе</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -38,8 +39,14 @@
                 <tr th:each="record : ${records}">
                     <td th:text="${record.getTest().getTitle()}"></td>
                     <td th:text="${record.getGroup().getGroupNumber()}"></td>
-                    <td th:text="${record.getIsDone()}"></td>
+                    <td th:if="${record.getIsDone()}">
+                        <a style="color: lime">Выполнен всей группой</a>
+                    </td>
+                    <td th:unless="${record.getIsDone()}">
+                        <a style="color: red;">Не выполнен</a>
+                    </td>
                     <td th:text="${record.getStudentsCompleted() + '/' + record.getTestStudents().size()}"></td>
+                    <td th:text="${T(ru.lobakina.educationalquizapp.support.helper.AverageScoreCalculator).getAverageGroupScore(record) + ' / ' + record.getTest().getQuestionQuantity()}"></td>
                     <td>
                         <div sec:authorize="isAuthenticated() && hasRole('TEACHER')">
                             <a class="btn btn-sm btn-outline-success"
